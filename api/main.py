@@ -6,6 +6,7 @@ APP_SECRET = "XSHiz00HzeiN4xqFtjwVMbJ8EkNExlpp"
 CHAT_ID = "oc_bf1cf0b695aa6eccaac36b45538b6c99"
 
 def handler(request):
+    # 1️⃣ 获取 token
     res = requests.post(
         "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
         json={
@@ -15,10 +16,12 @@ def handler(request):
     )
     token = res.json()["tenant_access_token"]
 
+    # 2️⃣ 构造消息
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    text = f"📰 新闻黄日报 {today}\n今天也要保持好奇 🌱"
+    text = f"📰 测试消息 {today}"
 
-    requests.post(
+    # 3️⃣ 发消息
+    r = requests.post(
         "https://open.feishu.cn/open-apis/im/v1/messages",
         headers={
             "Authorization": f"Bearer {token}"
@@ -33,4 +36,5 @@ def handler(request):
         }
     )
 
-    return {"statusCode": 200}
+    print(r.text)
+    return {"statusCode": 200, "body": "ok"}
