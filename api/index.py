@@ -9,18 +9,15 @@ def handler(request):
     # 获取 token
     res = requests.post(
         "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
-        json={
-            "app_id": APP_ID,
-            "app_secret": APP_SECRET
-        }
+        json={"app_id": APP_ID, "app_secret": APP_SECRET}
     )
     token = res.json()["tenant_access_token"]
 
-    # 生成消息
+    # 构造消息
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     text = f"📰 测试消息 {today}"
 
-    # 发送消息
+    # 发送到飞书群
     requests.post(
         "https://open.feishu.cn/open-apis/im/v1/messages",
         headers={"Authorization": f"Bearer {token}"},
